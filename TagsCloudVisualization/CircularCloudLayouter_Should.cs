@@ -48,27 +48,20 @@ namespace TagsCloudVisualization
             returnedSize.Should().BeEquivalentTo(enteredSize);
         }
 
-        //[Test]
-        //public void PutNextRectangle_ShouldMessageAboutLackOfFreeSpace()
-        //{
-        //    var layout = new CircularCloudLayouter(new Point(5, 5));
+        [Test]
+        public void PutNextRectangle_HasNotEnoughPoints()
+        {
+            var points = new[] { new Point(0, 0), new Point(1, 1), new Point(2, 2) };
+            var layout = new CircularCloudLayouter(new Point(100, 100), points);
+            var rectangleSizes = new RandomSizeRectangle().GenerateRectangles(5);
 
-        //    Action getTooBigRectangel = () => layout.PutNextRectangle(new Size(5, 11));
-        //    getTooBigRectangel.Should().Throw<ArgumentException>();
-        //}
-        //[Test]
-        //public void PutNextRectangle_ShouldPlaceItIntoLayoutBorders()
-        //{
-        //    var layout = new CircularCloudLayouter(new Point(5, 5));
-        //    var nextRectangleCentre = typeof(CircularCloudLayouter)
-        //        .GetField("nextRectangleCentre", BindingFlags.NonPublic | BindingFlags.Instance);
-        //    nextRectangleCentre.SetValue(layout, new Point(8,8));
-        //    var rectangle = layout.PutNextRectangle(new Size(3, 4));
-        //    var borders = new Rectangle(new Point(0, 0), layout.Size);
+            var makeRectangles = () => {
+                foreach (var size in rectangleSizes)
+                    layout.PutNextRectangle(size);
+            };
 
-        //    rectangle.IntersectsWith(borders).Should().BeTrue();
-        //}
-
-
+            makeRectangles.Should().Throw<ArgumentException>()
+                .WithMessage("Not Enough Points Generated");
+        }
     }
 }

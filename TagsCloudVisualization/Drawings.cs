@@ -36,8 +36,8 @@ namespace TagsCloudVisualization
 
             rectangleSizes = new RandomSizeRectangle().
                 GenerateRectangles(300);
-            points = new DeltaSHaped().GeneratePoints(new Point(1000, 1000));
-            layout = new CircularCloudLayouter(new Point(1000, 1000), points);
+            //points = new DeltaSHaped().GeneratePoints(new Point(1000, 1000));
+            layout = new CircularCloudLayouter(new Point(1000, 1000), new DeltaSHaped().GeneratePoints);
             image = new Bitmap(layout.Size.Width, layout.Size.Height);
             foreach (var size in rectangleSizes)
             {

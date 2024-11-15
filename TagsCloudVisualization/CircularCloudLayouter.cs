@@ -49,38 +49,6 @@ namespace TagsCloudVisualization
             return new Size(width, height);
         }
 
-
-        //public Rectangle PutNextRectangle(Size rectangleSize)
-        //{
-        //    var points = _points.GetEnumerator();
-        //    points.MoveNext();
-
-        //    while (true)
-        //    {
-        //        var point = points.Current;
-        //        var supposed = new Rectangle(new Point(point.X - rectangleSize.Width / 2, point.Y - rectangleSize.Height / 2),
-        //            rectangleSize);
-        //        if (Rectangles.Count == 0)
-        //        {
-        //            Rectangles.Add(supposed);
-        //            return supposed;
-        //        }
-
-        //        if (IntersectsWithAnyOther(supposed, Rectangles))
-        //        {
-        //            points.MoveNext();
-        //            continue;
-        //        }
-        //        else
-        //        {
-        //            Rectangles.Add(supposed);
-        //        }
-
-        //        points.MoveNext();
-
-        //    }
-        //}
-
         public Rectangle PutNextRectangle(Size rectangleSize)
         {
             if (Rectangles.Count == 0)
@@ -100,7 +68,7 @@ namespace TagsCloudVisualization
                 Rectangles.Add(supposed);
                 return supposed;
             }
-            return new Rectangle();
+            throw new ArgumentException("Not Enough Points Generated");
         }
 
         public static bool IntersectsWithAnyOther(Rectangle supposed, List<Rectangle> others)

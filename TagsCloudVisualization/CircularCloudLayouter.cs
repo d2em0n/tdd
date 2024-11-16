@@ -15,30 +15,14 @@ namespace TagsCloudVisualization
         public List<Rectangle> Rectangles { get; set; }
 
 
-        public CircularCloudLayouter(Point center)
+        public CircularCloudLayouter(Point center, IPointGenerator pointGenerator) 
         {
-            if (center.X > 0 && center.Y > 0)
-                Center = center;
-            else throw new ArgumentException("Center coordinates values have to be greater than Zero");
-            Size = CountSize(center);
-            Rectangles = [];
-            _points = new ArchemedianSpiral().GeneratePoints(Center);
-        }
-
-        public CircularCloudLayouter(Point center, IEnumerable<Point> points) : this(center)
-        {
+            if (center.X <=0 || center.Y <=0)
+                throw new ArgumentException("Center coordinates values have to be greater than Zero");
             Center = center;
             Size = CountSize(center);
             Rectangles = [];
-            _points = points;
-        }
-
-        public CircularCloudLayouter(Point center, Func<Point, IEnumerable<Point>> pointGenerator) : this(center)
-        {
-            Center = center;
-            Size = CountSize(center);
-            Rectangles = [];
-            _points = pointGenerator(Center);
+            _points = pointGenerator.GeneratePoints(Center);
         }
 
 
@@ -51,13 +35,13 @@ namespace TagsCloudVisualization
 
         public Rectangle PutNextRectangle(Size rectangleSize)
         {
-            if (Rectangles.Count == 0)
-            {
-                var firstRectangle = new Rectangle(new Point(Center.X - rectangleSize.Width / 2,
-                    Center.Y - rectangleSize.Height / 2), rectangleSize);
-                Rectangles.Add(firstRectangle);
-                return firstRectangle;
-            }
+            //if (Rectangles.Count == 0)
+            //{
+            //    var firstRectangle = new Rectangle(new Point(Center.X - rectangleSize.Width / 2,
+            //        Center.Y - rectangleSize.Height / 2), rectangleSize);
+            //    Rectangles.Add(firstRectangle);
+            //    return firstRectangle;
+            //}
 
             foreach (var point in _points)
             {
@@ -73,8 +57,7 @@ namespace TagsCloudVisualization
 
         public static bool IntersectsWithAnyOther(Rectangle supposed, List<Rectangle> others)
         {
-            return others.Select(x => x.IntersectsWith(supposed))
-                .Any(x => x == true);
+            return others.Any(x => x.IntersectsWith(supposed));
         }
     }
 }

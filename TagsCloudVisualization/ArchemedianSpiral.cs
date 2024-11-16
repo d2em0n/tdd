@@ -13,20 +13,14 @@ namespace TagsCloudVisualization
         {
             var zoom = 1;
             var spiralStep = 0.0;
-            var current = start;
-            yield return current;
+            yield return start;
             while (true)
             {
                 spiralStep += Math.PI / 180;
                 var x = start.X + (int)(zoom * spiralStep * Math.Cos(spiralStep));
                 var y = start.Y + (int)(zoom * spiralStep * Math.Sin(spiralStep));
                 var next = new Point(x, y);
-                if (!next.Equals(current))
-                {
-                    yield return current;
-                    current = next;
-                }
-                else continue;
+                yield return next;
             }
         }
     }

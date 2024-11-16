@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace TagsCloudVisualization
 {
-    internal class HeartShaped : IPointGenerator
+    public class HeartShaped : IPointGenerator
     {
         public IEnumerable<Point> GeneratePoints(Point start)
         {
             var zoom = 1;
-            var current = start;
             yield return start;
             while (true)
             {
@@ -21,12 +20,7 @@ namespace TagsCloudVisualization
                     var x = start.X + (int)(zoom * pair.Item1);
                     var y = start.Y + (int)(zoom * pair.Item2);
                     var next = new Point(x, y);
-                    if (!next.Equals(current))
-                    {
-                        yield return current;
-                        current = next;
-                    }
-                    else continue;
+                    yield return next;
                 }
                 zoom += 1;
             }

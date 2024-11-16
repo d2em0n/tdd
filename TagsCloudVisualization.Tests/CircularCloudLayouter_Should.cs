@@ -7,6 +7,7 @@ using NUnit.Framework;
 using FluentAssertions;
 using System.Reflection;
 using System.Drawing;
+using TagsCloudVisualization.Tests;
 
 
 namespace TagsCloudVisualization
@@ -21,7 +22,7 @@ namespace TagsCloudVisualization
             var center = new Point(coordinateValue, coordinateValue);
             var size = new Size(sizeValue, sizeValue);
 
-            var layout = new CircularCloudLayouter(center);
+            var layout = new CircularCloudLayouter(center, new ArchemedianSpiral());
 
             layout.Size.Should().BeEquivalentTo(size);
         }
@@ -32,7 +33,7 @@ namespace TagsCloudVisualization
         [TestCase(1, 0, TestName = "Zero Y")]
         public void CircularCloudLayouter_GetsOnlyPositiveCenterCoordinates(int x, int y)
         {
-            Action makeLayout = () => new CircularCloudLayouter(new Point(x, y));
+            Action makeLayout = () => new CircularCloudLayouter(new Point(x, y), new ArchemedianSpiral());
 
             makeLayout.Should().Throw<ArgumentException>()
                 .WithMessage("Center coordinates values have to be greater than Zero");
@@ -41,7 +42,7 @@ namespace TagsCloudVisualization
         [Test]
         public void PutNextRectangle_ShouldKeepEnteredSize()
         {
-            var layout = new CircularCloudLayouter(new Point(5, 5));
+            var layout = new CircularCloudLayouter(new Point(5, 5), new ArchemedianSpiral());
             var enteredSize = new Size(3, 4);
             var returnedSize = layout.PutNextRectangle(enteredSize).Size;
 
@@ -51,8 +52,8 @@ namespace TagsCloudVisualization
         [Test]
         public void PutNextRectangle_HasNotEnoughPoints()
         {
-            var points = new[] { new Point(0, 0), new Point(1, 1), new Point(2, 2) };
-            var layout = new CircularCloudLayouter(new Point(100, 100), points);
+            
+            var layout = new CircularCloudLayouter(new Point(100, 100), new TestPointGenerator());
             var rectangleSizes = new RandomSizeRectangle().GenerateRectangles(5);
 
             var makeRectangles = () => {

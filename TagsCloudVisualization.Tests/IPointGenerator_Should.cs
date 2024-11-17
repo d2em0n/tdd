@@ -6,37 +6,25 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using FluentAssertions;
+using FluentAssertions.Execution;
 
 namespace TagsCloudVisualization
 {
     [TestFixture]
     public class IPointGenerator_Should
     {
-        [Test]
-        public void GeneratePoints_MovingAwayFromTheStart()
-        {
-            GeneratePoints_MovingAwayFromTheStartFor(new ArchemedianSpiral());
-            GeneratePoints_MovingAwayFromTheStartFor(new HeartShaped());
-            GeneratePoints_MovingAwayFromTheStartFor(new DeltaSHaped());
-        }
-
-        [Test]
-        public void GeneratePoints_ReturnsStartAsFirstPoint()
-        {
-            GeneratePoints_ReturnsStartAsFirstPointFor(new ArchemedianSpiral());
-            GeneratePoints_ReturnsStartAsFirstPointFor(new HeartShaped());
-            GeneratePoints_ReturnsStartAsFirstPointFor(new DeltaSHaped());
-        }
-
+        [TestCaseSource(nameof(TestCases))]
         public void GeneratePoints_MovingAwayFromTheStartFor(IPointGenerator pointGenerator)
         {
             var start = new Point(0, 0);
-            var points = pointGenerator.GeneratePoints(start); 
+            var points = pointGenerator.GeneratePoints(start);
             var nearPoint = points.ElementAt(100);
             var farPoint = points.ElementAt(1000);
 
             DistanceBetween(start, nearPoint).Should().BeLessThan(DistanceBetween(start, farPoint));
         }
+
+        [TestCaseSource(nameof(TestCases))]
         public void GeneratePoints_ReturnsStartAsFirstPointFor(IPointGenerator pointGenerator)
         {
             var start = new Point(100, 100);
@@ -44,6 +32,13 @@ namespace TagsCloudVisualization
                 .First();
 
             firstReturned.Should().BeEquivalentTo(start);
+        }
+
+        public static IEnumerable<IPointGenerator> TestCases()
+        {
+            yield return new ArchemedianSpiral();
+            yield return new HeartShaped();
+            yield return new DeltaSHaped();
         }
 
         public int DistanceBetween(Point start, Point destination)

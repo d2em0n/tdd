@@ -7,11 +7,11 @@ using NUnit.Framework;
 using FluentAssertions;
 using System.Reflection;
 using System.Drawing;
-using NUnit.Framework.Interfaces;
 using TagsCloudVisualization.Tests;
 using System.IO;
 using System.Runtime.InteropServices;
 using FluentAssertions.Execution;
+using NUnit.Framework.Interfaces;
 
 
 namespace TagsCloudVisualization
@@ -57,12 +57,11 @@ namespace TagsCloudVisualization
         [Test]
         public void PutNextRectangle_HasNotEnoughPoints()
         {
-
+            
             layout = new CircularCloudLayouter(new Point(100, 100), new TestPointGenerator());
             var rectangleSizes = new RandomSizeRectangle().GenerateRectangles(5);
 
-            var makeRectangles = () =>
-            {
+            var makeRectangles = () => {
                 foreach (var size in rectangleSizes)
                     layout.PutNextRectangle(size);
             };

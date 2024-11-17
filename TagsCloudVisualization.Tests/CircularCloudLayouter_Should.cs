@@ -11,6 +11,7 @@ using NUnit.Framework.Interfaces;
 using TagsCloudVisualization.Tests;
 using System.IO;
 using System.Runtime.InteropServices;
+using FluentAssertions.Execution;
 
 
 namespace TagsCloudVisualization
@@ -73,20 +74,20 @@ namespace TagsCloudVisualization
         [TearDown]
         public void TearDown()
         {
-            if (TestContext.CurrentContext.Result.Outcome == ResultState.Failure)
-            {
-                var image = new Bitmap(layout.Size.Width, layout.Size.Height);
-                foreach (var rectangle in layout.Rectangles)
-                {
-                    Drawings.DrawRectangle(image, rectangle);
-                }
-                var fileName = string.Format("{0}.bmp",TestContext.CurrentContext.Test.Name);
-                var path = TestContext.CurrentContext.WorkDirectory;
-                var fullPath = Path.Combine(path, fileName);
-                var message = string.Format("Tag cloud visualization saved to file {0}", fullPath);
-                image.Save(fileName);
-                Console.WriteLine(message);
-            }
+            if (TestContext.CurrentContext.Result.Outcome != ResultState.Failure)
+                return;
+
+            var image = new Bitmap(layout.Size.Width, layout.Size.Height);
+            foreach (var rectangle in layout.Rectangles)
+                Drawings.DrawRectangle(image, rectangle);
+            
+            var fileName = string.Format("{0}.bmp", TestContext.CurrentContext.Test.Name);
+            var path = TestContext.CurrentContext.WorkDirectory;
+            var fullPath = Path.Combine(path, fileName);
+            var message = string.Format("Tag cloud visualization saved to file {0}", fullPath);
+
+            image.Save(fileName);
+            Console.WriteLine(message);
         }
     }
 }

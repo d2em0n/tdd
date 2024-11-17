@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TagsCloudVisualization
 {
-    internal class Drawings
+    public class Drawings
     {
         public static void DrawPicture(IRectangleGenerator rectangleGenerator, int quantity,
             IPointGenerator pointGenerator, Point startPoint, string filename)
@@ -24,7 +24,7 @@ namespace TagsCloudVisualization
             image.Save(filename);
         }
 
-        private static void DrawRectangle(Bitmap image, Rectangle rectangle)
+        public static void DrawRectangle(Bitmap image, Rectangle rectangle)
         {
             var brush = new SolidBrush(GetRandomColor());
             var formGraphics = Graphics.FromImage(image);

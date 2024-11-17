@@ -35,14 +35,6 @@ namespace TagsCloudVisualization
 
         public Rectangle PutNextRectangle(Size rectangleSize)
         {
-            //if (Rectangles.Count == 0)
-            //{
-            //    var firstRectangle = new Rectangle(new Point(Center.X - rectangleSize.Width / 2,
-            //        Center.Y - rectangleSize.Height / 2), rectangleSize);
-            //    Rectangles.Add(firstRectangle);
-            //    return firstRectangle;
-            //}
-
             foreach (var point in _points)
             {
                 var supposed = new Rectangle(new Point(point.X - rectangleSize.Width / 2, point.Y - rectangleSize.Height / 2),
